@@ -2,7 +2,7 @@ package org.trail.scapes.domain.user.friendship
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
-import org.trail.scapes.domain.enums.RequestStatus
+import org.trail.scapes.domain.enums.FriendshipRequestStatus
 import org.trail.scapes.domain.user.User
 import java.time.LocalDateTime
 
@@ -28,7 +28,7 @@ open class FriendshipRequest(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    open var status: RequestStatus = RequestStatus.PENDING,
+    open var status: FriendshipRequestStatus = FriendshipRequestStatus.PENDING,
 
     @Column(name = "sent_at", nullable = false)
     open var sentAt: LocalDateTime = LocalDateTime.now(),
@@ -36,5 +36,5 @@ open class FriendshipRequest(
     @Column(name = "message")
     open var message: String? = null,
 ) {
-    constructor() : this(null, User(), User(), RequestStatus.PENDING, LocalDateTime.now())
+    constructor() : this(null, User(), User(), FriendshipRequestStatus.PENDING, LocalDateTime.now())
 }

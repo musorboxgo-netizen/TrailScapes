@@ -11,11 +11,11 @@ class CategoryService(
     private val categoryRepository: CategoryRepository,
     private val categoryMapper: CategoryMapper
 ) {
-    fun getAllCategories(): List<CategoryDto> =
+    fun getAll(): List<CategoryDto> =
         categoryRepository.findAll()
             .map { categoryMapper.toDto(it) }
 
-    fun getCategoryById(id: Long): CategoryDto =
+    fun getById(id: Long): CategoryDto =
         categoryRepository.findById(id)
             .map { categoryMapper.toDto(it) }
             .orElseThrow { NoSuchElementException("Category with id=$id not found") }
@@ -37,7 +37,7 @@ class CategoryService(
         return categoryMapper.toDto(updated)
     }
 
-    fun deleteCategory(id: Long) {
+    fun deleteById(id: Long) {
         if (!categoryRepository.existsById(id)) {
             throw NoSuchElementException("Category with id=$id not found")
         }

@@ -2,6 +2,8 @@ package org.trail.scapes.domain.enums
 
 enum class FriendshipStatus {
     ACTIVE,
-    BLOCKED,
-    REMOVED
+    REMOVED,
+    OUTGOING_PENDING,
+    INCOMING_PENDING,
+    NONE
 }

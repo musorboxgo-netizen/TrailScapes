@@ -9,6 +9,15 @@ import org.trail.scapes.domain.user.friendship.Friendship
 interface FriendshipRepository : JpaRepository<Friendship, Long> {
 
     @Query("""
+        SELECT CASE WHEN COUNT(f) > 0 THEN TRUE ELSE FALSE END
+        FROM Friendship f
+        WHERE f.status = 'ACTIVE'
+          AND f.userLow.id = :lowId
+          AND f.userHigh.id = :highId
+    """)
+    fun existsActiveByPair(@Param("lowId") lowId: Long, @Param("highId") highId: Long): Boolean
+
+    @Query("""
         SELECT f FROM Friendship f
         WHERE f.userLow.id = :lowId AND f.userHigh.id = :highId
           AND f.status = 'ACTIVE'

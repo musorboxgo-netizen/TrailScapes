@@ -2,7 +2,7 @@ package org.trail.scapes.mappers.user
 
 import org.hibernate.Hibernate
 import org.springframework.stereotype.Service
-import org.trail.scapes.domain.enums.RequestStatus
+import org.trail.scapes.domain.enums.FriendshipRequestStatus
 import org.trail.scapes.domain.user.User
 import org.trail.scapes.domain.user.friendship.FriendshipRequest
 import org.trail.scapes.dto.user.friendship.CreateFriendshipRequestDto
@@ -48,7 +48,7 @@ class FriendshipRequestMapper(
             id = null,
             requester = User().apply { id = requesterId },
             addressee = User().apply { id = dto.addresseeId },
-            status = RequestStatus.PENDING,
+            status = FriendshipRequestStatus.PENDING,
             sentAt = LocalDateTime.now(),
             message = dto.message
         )

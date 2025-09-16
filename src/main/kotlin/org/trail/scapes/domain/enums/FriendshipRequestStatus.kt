@@ -1,5 +1,5 @@
 package org.trail.scapes.domain.enums
 
-enum class RequestStatus {
+enum class FriendshipRequestStatus {
     PENDING, ACCEPTED, DECLINED
 }
