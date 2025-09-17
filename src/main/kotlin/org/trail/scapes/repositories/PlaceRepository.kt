@@ -47,4 +47,30 @@ interface PlaceRepository: JpaRepository<Place, Long> {
         WHERE p.createdBy.id = :userId
     """)
     fun countUsersAddedPlacesByUserId(@Param("userId") userId: Long): Long
+
+    fun existsByTitleAndLatitudeAndLongitude(
+        title: String,
+        latitude: Double,
+        longitude: Double
+    ): Boolean
+
+    fun findByTitleContainingIgnoreCase(title: String): List<Place>
+
+    fun findByCategoriesId(categoryId: Long): List<Place>
+
+    @Query(
+        """
+        SELECT p FROM Place p
+        WHERE (6371 * acos(
+            cos(radians(:lat)) * cos(radians(p.latitude)) 
+          * cos(radians(p.longitude) - radians(:lon)) 
+          + sin(radians(:lat)) * sin(radians(p.latitude))
+        )) < :radiusKm
+        """
+    )
+    fun findWithinRadius(
+        @Param("lat") lat: Double,
+        @Param("lon") lon: Double,
+        @Param("radiusKm") radiusKm: Double
+    ): List<Place>
 }

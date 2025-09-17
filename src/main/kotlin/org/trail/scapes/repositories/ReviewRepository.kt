@@ -22,4 +22,8 @@ interface ReviewRepository: JpaRepository<Review, Long> {
         WHERE r.author.id = :userId
     """)
     fun countReviewsByUserId(@Param("userId") userId: Long): Long
+
+    fun findAllByAuthorIdOrderByCreatedAtDesc(authorId: Long): List<Review>
+
+    fun findAllByPlaceIdOrderByCreatedAtDesc(placeId: Long): List<Review>
 }

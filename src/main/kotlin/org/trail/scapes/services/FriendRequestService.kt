@@ -27,7 +27,8 @@ open class FriendRequestService(
      * @param requesterId — ID текущего пользователя (инициатора)
      * @param dto — данные для создания заявки (адресат + сообщение)
      */
-    fun sendRequest(requesterId: Long, dto: CreateFriendshipRequestDto): FriendshipRequestDto {
+    @Transactional
+    open fun sendRequest(requesterId: Long, dto: CreateFriendshipRequestDto): FriendshipRequestDto {
         if (requesterId == dto.addresseeId) {
             throw IllegalArgumentException("User can't send friend request to himself.")
         }
@@ -103,7 +104,8 @@ open class FriendRequestService(
      * Отклонить заявку.
      * Разрешено только адресату и только для PENDING.
      */
-    fun declineRequest(requestId: Long, currentUserId: Long): FriendshipRequestDto {
+    @Transactional
+    open fun declineRequest(requestId: Long, currentUserId: Long): FriendshipRequestDto {
         val request = friendshipRequestRepository.findById(requestId)
             .orElseThrow { NoSuchElementException("Friend request with id=$requestId not found") }
 

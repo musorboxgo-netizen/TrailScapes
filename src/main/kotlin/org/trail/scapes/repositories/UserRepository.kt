@@ -6,4 +6,7 @@ import org.trail.scapes.domain.user.User
 
 @Repository
 interface UserRepository: JpaRepository<User, Long> {
+    fun findByUsername(username: String): User?
+    fun existsByUsername(username: String): Boolean
+    fun existsByEmail(email: String): Boolean
 }

@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.trail.scapes.domain.Image
+import org.trail.scapes.domain.user.User
 import org.trail.scapes.dto.image.CreateImageDto
 import org.trail.scapes.dto.image.ImageDto
 import org.trail.scapes.mappers.image.ImageMapper
@@ -111,9 +112,30 @@ open class ImageService(
             review = null,
             user = user
         )
+
         val saved = imageRepository.save(entity)
         user.profileImage = saved
         return imageMapper.toDto(saved)
+    }
+
+    @Transactional
+     open fun attachExistingProfileImage(user: User, imageId: Long) {
+        val img: Image = imageRepository.findById(imageId)
+            .orElseThrow { NoSuchElementException("Profile image not found") }
+
+        require(img.user == null && img.place == null && img.review == null) {
+            "Image is already attached to another entity"
+        }
+
+        user.profileImage?.let { existing ->
+            deleteById(existing.id!!)
+            user.profileImage = null
+        }
+
+        img.user = user
+        user.profileImage = img
+        imageRepository.save(img)
+        userRepository.save(user)
     }
 
     @Transactional
